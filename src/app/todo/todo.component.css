@@ -29,6 +29,7 @@ h1 {
     margin-bottom: 20px;
     margin-top: 0;
     padding-top: 30px;
+    font-size: 45px;
     color: #0078d4;
 }
 
@@ -39,10 +40,15 @@ h1 {
 
 input[type="text"] {
     flex: 1;
+    width: 80%;
     padding: 8px;
-    border: 1px solid #ccc;
+    background-color: rgba(0, 0, 0, 0.764);
+    border: 1px solid black;
     border-radius: 3px;
-    margin-right: 5px;
+    bottom: 30px;
+    color: white;
+    margin-left: 60px;
+    position: fixed;
 }
 
 button {
@@ -54,29 +60,75 @@ button {
     cursor: pointer;
 }
 
+
 ul {
     list-style-type: none;
     padding: 0;
 }
+.taskDiv{
+    width: 65%;
+   display: flex;
 
+}
+.taskDiv2{
+    width: 30%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
 li {
     padding: 10px;
     margin-bottom: 5px;
-    background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.488);
+    color: black;
     border-radius: 3px;
+    font-weight: bolder;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+.first{
+    display: flex;
+    flex-direction: column;
+}
+#inner{
+    display: flex;
+    flex-direction: column;
+    max-width: 50px;
+}
 
 li button {
     background-color: transparent;
-    color: #a6a6a6;
+    color: red;
     border: none;
     cursor: pointer;
+    /* margin-left: 80%; */
+    font-weight: bold;
 }
 
+.icon-black {
+    color: yellow;
+  }
+.secondary{
+    display: flex;
+    flex-direction: column;
+}
+input[type="checkbox"]{ 
+   margin-right: 2%;
+   
+}
+
+
+.comp{
+    display: flex;
+    flex-direction: column;
+}
+.done{
+    text-decoration: line-through;
+    
+}
 li button:hover {
     color: #333;
 }
