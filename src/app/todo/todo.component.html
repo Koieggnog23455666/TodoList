@@ -4,15 +4,52 @@
         <h3>{{today | date: 'EEEE' }}, {{today | date: 'd'}} {{ today | date: 'MMMM'}} </h3>
         <h3 class="h3Element"></h3>
     </div>
+    <form [formGroup]="form" style="height: 10%;">
+        <div class="top">
+            <div class="top1">
+                <input type="text" formControlName="taskNew" placeholder="Add a new task">
+                <span style="color: red;" *ngIf="form.get('taskNew')?.invalid &&
+                (form.get('taskNew')?.dirty || form.get('taskNew')?.touched)">
+                    <span style="color: red;" *ngIf="form.get('taskNew')?.errors?.['required']">Enter a task. </span>
+                    <span *ngIf="form.get('taskNew')?.errors?.['pattern']">Task should be string</span>
+                    <span *ngIf="form.get('taskNew')?.errors?.['maxLength']">Task should not be more than 15
+                        characters</span>
+                </span>
+            </div>
+            <div class="top2">
+                <label for="dueDate">Due Date:</label>
+                <input type="date" formControlName="dueDate" id="dueDate"  [min]="validDate">
 
+                <span *ngIf="form.get('dueDate')?.invalid && form.get('dueDate')?.touched" style="color: red;">
+                    <span style="color: red;" *ngIf="form.get('dueDate')?.errors?.['required']"> Select a Date Please
+                    </span>
+                    
+                </span>
+            </div>
+            <div>
+                <button type="submit" (click)="onSubmit()" [disabled]="form.invalid" > Add Task</button>
+            </div>
+
+        </div>
+
+    </form>
+
+
+ <div class="attribute"><div>Task</div><div>Last Date</div> <div>Action</div></div>
     <div class="main1">
-        <ul>
+        <ul >
+            <div *ngIf="tasks.length === 0">No tasks found</div>
             <li *ngFor="let task of tasks; let i = index" [ngClass]="{'completed': task.completed}">
                 <div class="taskDiv">
                     <input type="checkbox" class="check" (change)="toggleTaskCompletion(task)">
                     <span class="first">{{ task.text }} <div>Tasks</div> </span>
+                    <span></span>
+                </div>
+                <div style="color: red; width: 40%;" >
+                   Last Date: {{task.validDate}}
                 </div>
                 <div class="taskDiv2">
+                    <button (click)="editMode(i)">Edit</button>
                     <button (click)="deleteTaskfromPending(i)">Delete </button>
 
                     <i class="fa-solid fa-star" id="imp" [ngClass]="{'icon-black': task.isIconBlack}"
@@ -30,10 +67,12 @@
                     <input type="checkbox" [checked]="task.completed" (change)="toggleTaskCompletion(task)">
 
                     <div class="comp"><span [ngClass]="{'done': task.completed}">{{ task.text }}</span>
-                        <span>Task</span>
+                        
                     </div>
                 </div>
-                <div class="taskDiv2"> <button (click)="deleteTaskFromCompleted(i)">Delete </button>
+                <div class="taskDiv2">
+                    <button (click)="editModeInCompleted(i)">Edit</button>
+                    <button (click)="deleteTaskFromCompleted(i)">Delete </button>
                     <i class="fa-solid fa-star" id="imp" [ngClass]="{'icon-black': task.isIconBlack}"
                         (click)="toggleIconColor(task)"></i>
                 </div>
@@ -41,8 +80,5 @@
             </li>
         </ul>
     </div>
-
-
-    <input type="text" [(ngModel)]="newTask" placeholder="Add a new task" (keyup.enter)="addTask() ">
 
 </div>
