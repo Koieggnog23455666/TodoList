@@ -119,6 +119,9 @@ li {
     justify-content: space-between;
     align-items: center;
 }
+.list{
+    display: flex;
+}
 .first{
     display: flex;
     flex-direction: column;
@@ -130,14 +133,17 @@ li {
 }
 
 li button {
-    background-color: transparent;
-    color: red;
+    background-color: #0078d4;
+    color: #fff;
     border: none;
     cursor: pointer;
     /* margin-left: 80%; */
     font-weight: bold;
 }
-
+.taskDiv2{
+    display: flex;
+    justify-content: space-between;
+}
 .icon-black {
     color: yellow;
   }

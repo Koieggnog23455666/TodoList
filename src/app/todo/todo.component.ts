@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms'
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 
 @Component({
   selector: 'app-todo',
@@ -25,33 +25,46 @@ export class TodoComponent implements OnInit {
     this.getData();
     const today = new Date();
     this.validDate = this.todayDate(today);
-  }
+     
+  }  
   todayDate(date: Date): string {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
-
   }
-  // validateDueDate(control: any): { [key: string]: boolean } | null {
-  //   const selectedDate = new Date(control.value);
-  //   const today = new Date();
-  //   today.setHours(0, 0, 0, 0); // Set hours to 0 for comparison
-  //   if (selectedDate < today) {
-  //     return { 'invalidDate': true };
-  //   }
-  //   return null;
-  // }
   form = new FormGroup({
     taskNew: new FormControl('', [
       Validators.required,
-      Validators.pattern('[a-zA-Z ]'),
-      Validators.maxLength(15),
+      Validators.pattern('\\s*[a-zA-Z]+(\\s*[a-zA-Z]+)*\\s*'),
+      this.maxLengthWithoutWhitespace(15)
     ]),
-    dueDate: new FormControl('', [Validators.required,
+    dueDate: new FormControl('', [Validators.required,this.validateDueDate
     ])
-  })
+  }) 
+ 
+  validateDueDate(control: any): { [key: string]: boolean } | null {
+    const selectedDate = new Date(control.value);
+    const today = new Date();
+ 
 
+    if (selectedDate < today) {
+      return { 'invalidDate': true };
+    }
+    return null;
+  }
+    maxLengthWithoutWhitespace(maxLength: number): ValidatorFn {
+    return (control: any): { [key: string]: boolean } | null => {
+      const value = control.value?.replace(/\s/g, ''); // Remove whitespace
+      console.log(value.length())
+      if (value.length > maxLength) {
+        return { 'maxlength': true };
+       
+      }
+      return null;
+    };
+  }
+  
   onSubmit() {
     const newTaskValue: any = this.form.get('taskNew')?.value?.trim();
     const dueDateValue: any = this.form.get('dueDate')?.value;
