@@ -28,7 +28,7 @@
                 </span>
             </div>
             <div>
-                <button type="submit" (click)="onSubmit()" [disabled]="form.invalid"> Add Task</button>
+                <button type="submit" (click)="onSubmit()" [disabled]="form.invalid">{{mode}} Task</button>
             </div>
 
         </div>
@@ -45,18 +45,18 @@
     <div class="main1">
         <ul>
 
-            <li *ngFor="let task of tasks; let i = index" [ngClass]="{'completed': task.completed}">
+            <li *ngFor="let task of tasks; let i = index" [ngClass]="{'completed': task.completed}" style="background-color: #0078d4;">
                 <div class="taskDiv">
                     <input type="checkbox" class="check" (change)="toggleTaskCompletion(task)">
-                    <span class="first">{{ task.text }} </span>
+                    <span class="first" style="color: #fff;">{{ task.text }} </span>
 
                 </div>
-                <div style="color: black; width: 40%;">
+                <div style="color: white; width: 40%;">
                     {{task.validDate}}
                 </div>
                 <div class="taskDiv2">
-                    <button (click)="editMode(i)">Edit</button>
-                    <button (click)="deleteTaskfromPending(i)">Delete </button>
+                    <button (click)="editMode(task,i,index3)" style="color: yellow;">Edit</button>
+                    <button (click)="deleteTaskfromPending(i)" style="color: red;">Delete </button>
 
                     <i class="fa-solid fa-star" id="imp" [ngClass]="{'icon-black': task.isIconBlack}"
                         (click)="toggleIconColor(task)"></i>
@@ -69,20 +69,20 @@
     <div class="main2">
         <h2>Completed Tasks </h2>
         <ul>
-            <li *ngFor="let task of completedTasks; let i = index" class="list">
+            <li *ngFor="let task of completedTasks; let i = index" class="list" style="background-color: #0078d4;">
                 <div class="taskDiv">
                     <input type="checkbox" [checked]="task.completed" (change)="toggleTaskCompletion(task)">
 
-                    <div class="comp"><span [ngClass]="{'done': task.completed}">{{ task.text }}</span>
+                    <div class="comp"><span [ngClass]="{'done': task.completed}" style="color: #fff;">{{ task.text }}</span>
 
                     </div>
                 </div>
-                <div style="color: black; width: 40%;">
+                <div style="color: #fff; width: 40%;">
                     {{task.validDate}}
                 </div>
                 <div class="taskDiv2">
-                    <button (click)="editModeInCompleted(i)">Edit</button>
-                    <button (click)="deleteTaskFromCompleted(i)">Delete </button>
+                    <button (click)="editModeInCompleted(task,i,index3)" style="color: yellow;">Edit</button>
+                    <button (click)="deleteTaskFromCompleted(i)" style="color: red;">Delete </button>
                     <i class="fa-solid fa-star" id="imp" [ngClass]="{'icon-black': task.isIconBlack}"
                         (click)="toggleIconColor(task)"></i>
                 </div>

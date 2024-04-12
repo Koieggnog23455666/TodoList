@@ -1,6 +1,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import {  AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
+interface task{
+  text: string, completed: boolean, isIconBlack: boolean, validDate: string
+}
 
 @Component({
   selector: 'app-todo',
@@ -18,8 +21,12 @@ export class TodoComponent implements OnInit {
   isIconBlack: boolean = false;
   index: any;
   index2: any;
+  index3:any;
   validDate: string = '';
+  mode:string='Add';
+  editTask:task|null=null
   trimTask: string = this.newTask.trim();
+
   ngOnInit(): void {
     this.getData();
     const today = new Date();
@@ -69,19 +76,63 @@ export class TodoComponent implements OnInit {
     }
    }
 
-  editMode(i: number) {
+  editMode(task:{text:string,completed:boolean,isIconBlack:boolean,validDate:string},i:number,i1:number) {
+    this.form.get('taskNew')?.setValue(task.text); // Set the form control value to the task text
+    this.form.get('dueDate')?.setValue(task.validDate); // Set the form control value to the task text
     this.index = i;
-    this.newTask = this.tasks[this.index].text;
+this.index3=i1;
+this.mode="Update";
+this.editTask = task;
+this.setData()
+this.getData()
   }
-  editModeInCompleted(i: number) {
+
+  editModeInCompleted(task:{text:string,completed:boolean,isIconBlack:boolean,validDate:string},i:number,i1:number) {
+    this.form.get('taskNew')?.setValue(task.text); // Set the form control value to the task text
+    this.form.get('dueDate')?.setValue(task.validDate); // Set the form control value to the task text
+    this.index = i;
+this.index3=i1;
+this.mode="Update";
+this.editTask = task;
     this.index2 = i
     this.newTask = this.completedTasks[this.index2].text;
   }
 
   addTask(newTaskValue: string, dueDateValue: string) {
-    this.tasks.push({ text: newTaskValue, completed: false, isIconBlack: false, validDate: dueDateValue });
-    this.newTask = '';
-    this.setData();
+  
+    if (this.mode === "Update") {
+      const newTask: task = {
+        text: newTaskValue || '',
+        validDate: dueDateValue || '',
+        completed: this.editTask?.completed || false,
+        isIconBlack:this.editTask?.isIconBlack||false
+      };
+      if (this.editTask  !== null && newTask.text !== '' && newTask.validDate !== '') {
+        const findIndexComplete = this.completedTasks.indexOf(this.editTask);
+        const findIndex = this.tasks.indexOf(this.editTask);
+        this.tasks.splice(findIndex, 1, newTask);
+        this.form.get( "dueDate" )!.setValue("");
+        this.setData()
+        this.mode="Add";
+        
+        if(newTask.completed == false){
+          this.tasks.splice(findIndex, 1, newTask);
+        }
+        else{
+          
+          this.completedTasks.splice(findIndexComplete, 1, newTask);
+          }
+      }
+     
+
+    }
+    else{
+      this.tasks.push({ text: newTaskValue, completed: false, isIconBlack: false, validDate: dueDateValue });
+      this.newTask = '';
+      this.form.get( "dueDate" )!.setValue("");
+      this.mode="Add";
+      this.setData();
+    }
 
   }
   deleteTaskfromPending(index: number) {
