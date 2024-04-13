@@ -21,7 +21,7 @@
             <div class="top2">
                 <label for="dueDate">Due Date:</label>
                 <input type="date" formControlName="dueDate" id="dueDate" [min]="validDate">
-                <span *ngIf="form.get('dueDate')?.invalid && form.get('dueDate')?.touched" style="color: red;">
+                <span *ngIf="form.get('dueDate')?.invalid && form.get('dueDate')?.touched" style="color: red; height: 80%;">
                     <span style="color: red;" *ngIf="form.get('dueDate')?.errors?.['required']"> Select a Date Please
                     </span>
                     <span *ngIf="form.get('dueDate')?.errors?.['invalidDate']">Do not select past Dates</span>
@@ -42,10 +42,10 @@
         <div>Action</div>
     </div>
     <div *ngIf="tasks.length === 0" style="display:flex; justify-content: center; margin-top: 3%;">No tasks found</div>
-    <div class="main1">
-        <ul>
+    <div class="main1" style="border-radius: 4%; background-color: #0078d4;">
+        <ul >
 
-            <li *ngFor="let task of tasks; let i = index" [ngClass]="{'completed': task.completed}" style="background-color: #0078d4;">
+            <li *ngFor="let task of tasks; let i = index" [ngClass]="{'completed': task.completed}" style="background-color: #0078d4; ">
                 <div class="taskDiv">
                     <input type="checkbox" class="check" (change)="toggleTaskCompletion(task)">
                     <span class="first" style="color: #fff;">{{ task.text }} </span>
@@ -55,8 +55,8 @@
                     {{task.validDate}}
                 </div>
                 <div class="taskDiv2">
-                    <button (click)="editMode(task,i,index3)" style="color: yellow;">Edit</button>
-                    <button (click)="deleteTaskfromPending(i)" style="color: red;">Delete </button>
+                    <button (click)="editMode(task,i,index3)" style="color: #fff;"><i class="fa-solid fa-pen-to-square" style="font-size: large;"></i></button>
+                    <button (click)="deleteTaskfromPending(i)" style="color: #fff; padding: 0;"><i class="fa-solid fa-eraser" style="font-size: large;"></i> </button>
 
                     <i class="fa-solid fa-star" id="imp" [ngClass]="{'icon-black': task.isIconBlack}"
                         (click)="toggleIconColor(task)"></i>
@@ -81,8 +81,8 @@
                     {{task.validDate}}
                 </div>
                 <div class="taskDiv2">
-                    <button (click)="editModeInCompleted(task,i,index3)" style="color: yellow;">Edit</button>
-                    <button (click)="deleteTaskFromCompleted(i)" style="color: red;">Delete </button>
+                    <button (click)="editModeInCompleted(task,i,index3)" style="color: #fff;"><i class="fa-solid fa-pen-to-square" style="font-size: large;"></i></button>
+                    <button (click)="deleteTaskFromCompleted(i)" style="color: #fff;"><i class="fa-solid fa-eraser" style="font-size: large;"></i> </button>
                     <i class="fa-solid fa-star" id="imp" [ngClass]="{'icon-black': task.isIconBlack}"
                         (click)="toggleIconColor(task)"></i>
                 </div>

@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import {  AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 interface task{
@@ -15,7 +14,6 @@ export class TodoComponent implements OnInit {
   tasks: { text: string, completed: boolean, isIconBlack: boolean, validDate: string }[] = [];
   completedTasks: { text: string, completed: boolean, isIconBlack: boolean,validDate:string }[] = [];
   newTask: string = '';
-  checkNum: any;
   today: Date = new Date();
   task1: any;
   isIconBlack: boolean = false;
@@ -43,15 +41,15 @@ export class TodoComponent implements OnInit {
     taskNew: new FormControl('', [
       Validators.required,
       Validators.pattern('\\s*[a-zA-Z]+(\\s*[a-zA-Z]+)*\\s*'),
-      this.maxLengthWithoutWhitespace(15)
+      this.maxLengthWithoutWhitespace(15),
     ]),
     dueDate: new FormControl('', [Validators.required,this.validateDueDate])
   }) 
-
   validateDueDate(control: any): { [key: string]: boolean } | null {
     const selectedDate = new Date(control.value);
     const today = new Date();
-    if (selectedDate < today) {
+    today.setHours(0, 0, 0, 0);
+    if (selectedDate <= today) {
       return { 'invalidDate': true };
     }
     return null;
@@ -59,14 +57,12 @@ export class TodoComponent implements OnInit {
     maxLengthWithoutWhitespace(maxLength: number): ValidatorFn {
     return (control: any): { [key: string]: boolean } | null => {
       const value = control.value?.replace(/\s/g, ''); // Remove whitespace
-      
       if (value.length > maxLength) {
         return { 'maxlength': true };
       }
       return null;
     }
     }
-  
    onSubmit() {
     const newTaskValue: any = this.form.get('taskNew')?.value?.trim();
     const dueDateValue: any = this.form.get('dueDate')?.value;
@@ -75,7 +71,6 @@ export class TodoComponent implements OnInit {
       this.form.reset()
     }
    }
-
   editMode(task:{text:string,completed:boolean,isIconBlack:boolean,validDate:string},i:number,i1:number) {
     this.form.get('taskNew')?.setValue(task.text); // Set the form control value to the task text
     this.form.get('dueDate')?.setValue(task.validDate); // Set the form control value to the task text
@@ -110,8 +105,7 @@ this.editTask = task;
       if (this.editTask  !== null && newTask.text !== '' && newTask.validDate !== '') {
         const findIndexComplete = this.completedTasks.indexOf(this.editTask);
         const findIndex = this.tasks.indexOf(this.editTask);
-        this.tasks.splice(findIndex, 1, newTask);
-        this.form.get( "dueDate" )!.setValue("");
+        this.form.get( "dueDate" )!.reset();
         this.setData()
         this.mode="Add";
         
@@ -119,9 +113,8 @@ this.editTask = task;
           this.tasks.splice(findIndex, 1, newTask);
         }
         else{
-          
           this.completedTasks.splice(findIndexComplete, 1, newTask);
-          }
+      }
       }
      
 
@@ -129,7 +122,7 @@ this.editTask = task;
     else{
       this.tasks.push({ text: newTaskValue, completed: false, isIconBlack: false, validDate: dueDateValue });
       this.newTask = '';
-      this.form.get( "dueDate" )!.setValue("");
+      this.form.get( "dueDate" )!.reset();
       this.mode="Add";
       this.setData();
     }
