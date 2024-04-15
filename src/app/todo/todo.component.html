@@ -18,17 +18,17 @@
 
 
             </div>
-            <div class="top2">
-                <label for="dueDate">Due Date:</label>
-                <input type="date" style="font-family: Arial, Helvetica, sans-serif;" formControlName="dueDate" id="dueDate" [min]="validDate">
-                <span *ngIf="form.get('dueDate')?.invalid && form.get('dueDate')?.touched" style="color: red; height: 80%;">
+            <div class="top2" style="height: 100px;">
+               
+                <input type="date" style="font-family: Arial, Helvetica, sans-serif;" formControlName="dueDate"  id="dueDate" [min]="validDate">
+                <span *ngIf="form.get('dueDate')?.invalid && form.get('dueDate')?.touched" style="color: red; height: 100%;">
                     <span style="color: red;" *ngIf="form.get('dueDate')?.errors?.['required']"> Select a Date Please
                     </span>
                     <span *ngIf="form.get('dueDate')?.errors?.['invalidDate']">Do not select past Dates</span>
                 </span>
             </div>
             <div>
-                <button type="submit" (click)="onSubmit()" [disabled]="form.invalid">{{mode}} Task</button>
+                <button type="submit" (click)="addTask()" [disabled]="form.invalid">{{mode}} Task</button>
             </div>
 
         </div>
@@ -59,7 +59,7 @@
                     <button (click)="editMode(task)" style="color: #fff;"><i class="fa-solid fa-pen-to-square" style="font-size: large;"></i></button>
                     <button (click)="deleteTaskfromPending(i)" style="color: #fff; padding: 0;"><i class="fa-solid fa-eraser" style="font-size: large;"></i> </button>
 
-                    <i class="fa-solid fa-star"  [ngClass]="{'icon-black': task.isIconBlack}"
+                    <i class="fa-solid fa-star"  [ngClass]="{'icon-black': task.isIconBlack,'icon-white':!task.isIconBlack}"
                         (click)="toggleIconColor(task)"></i>
                 </div>
 
@@ -83,7 +83,7 @@
                 <div class="taskDiv2">
                     <button (click)="editMode(task)"><i class="fa-solid fa-pen-to-square" style="font-size: large; color: #fff;"></i></button>
                     <button (click)="deleteTaskFromCompleted(i)" style="color: #fff;"><i class="fa-solid fa-eraser" style="font-size: large;"></i> </button>
-                    <i class="fa-solid fa-star"  [ngClass]="{'icon-black': task.isIconBlack}"
+                    <i class="fa-solid fa-star"  [ngClass]="{'icon-black': task.isIconBlack,'icon-white':!task.isIconBlack}"
                      (click)="toggleIconColor(task)"></i>
                 </div>
 

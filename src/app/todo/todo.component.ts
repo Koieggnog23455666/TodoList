@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl,FormControl,FormGroup,ValidatorFn,Validators,} from '@angular/forms';
 interface task {
   text: string;
   completed: boolean;
   isIconBlack: boolean;
   validDate: string;
-
 }
 
 @Component({
@@ -21,13 +14,7 @@ interface task {
 })
 export class TodoComponent implements OnInit {
   tasks: task[] = [];
-  completedTasks: {
-    text: string;
-    completed: boolean;
-    isIconBlack: boolean;
-    validDate: string;
-
-  }[] = [];
+  completedTasks: task[] = [];
   newTask: string = '';
   today: Date = new Date();
   task1: any;
@@ -37,7 +24,7 @@ export class TodoComponent implements OnInit {
   index3: any;
   validDate: string = '';
   mode: string = 'Add';
-  editTask: task | null = null;
+  editTask: task | null = null; //for creating task objects when task is selected for editing
   trimTask: string = this.newTask.trim();
 
   ngOnInit(): void {
@@ -58,6 +45,7 @@ export class TodoComponent implements OnInit {
       Validators.required,
       Validators.pattern('\\s*[a-zA-Z]+(\\s*[a-zA-Z]+)*\\s*'),
       this.maxLengthWithoutWhitespace(15),
+      
     ]),
     dueDate: new FormControl('', [Validators.required, this.validateDueDate]),
   });
@@ -79,22 +67,14 @@ export class TodoComponent implements OnInit {
       return null;
     };
   }
-  onSubmit() {
-    const newTaskValue: any = this.form.get('taskNew')?.value?.trim();
-    const dueDateValue: any = this.form.get('dueDate')?.value;
-    if (newTaskValue !== '') {
-      this.addTask(), this.form.reset();
-    }
-  }
+  
   editMode(task: task) {
     this.mode = 'Update';
     this.editTask = task;
     this.form.get('taskNew')?.setValue(task.text); // Set the form control value to the task text
     this.form.get('dueDate')?.setValue(task.validDate); // Set the form control value to the task text
     this.setData();
-    
   }
-
   addTask() {
     const newTaskValue = this.form.get('taskNew')?.value?.trim();
     const dueDateValue = this.form.get('dueDate')?.value;
@@ -123,6 +103,7 @@ export class TodoComponent implements OnInit {
       }
       this.mode = "Add"
       this.form.get('dueDate')?.reset()
+      this.form.reset()
     } 
     else {
       if (this.form.valid && newTaskValue && dueDateValue) {
@@ -131,13 +112,12 @@ export class TodoComponent implements OnInit {
           validDate: dueDateValue,
           completed: false,
           isIconBlack: false,
-
         };
         this.tasks.push(newTask);
         this.setData()
         this.form.get('dueDate')?.reset()
+        this.form.reset()
       }
-
       this.newTask = '';
       this.form.get('dueDate')!.reset();
       this.mode = 'Add';
